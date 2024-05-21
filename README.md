@@ -1,10 +1,3 @@
----
-title: "Readme"
-author: "xx xx"
-date: "2024-05-21"
-output: html_document
----
-
 # Model-based Impact Analysis of Climate Change and Land-use Intensification on Trohpic Networks 
 
 ## Overview 
@@ -64,14 +57,12 @@ mdl_prms = madingley_inputs("model parameters")
 plot(sptl_inp$hanpp, main="HANPP in gC/m^2/year")
 
 #crop the raster to spatial window extent (safe resources while running the model)
-sp_inputs_histo_2014 = crop_spatial_rasters_to_window(inputs = sp_inputs_histo_2014, spatial_window = spatial_window)
+sptl_inp = crop_spatial_rasters_to_window(inputs = sptl_inp, spatial_window = spatial_window)
 
 #plot hanpp raster to see if cropping worked 
-plot(sp_inputs_histo_2014$hanpp)
-
+plot(sptl_inp$hanpp)
 
 ```
-plot(sp_inputs_histo_2014$hanpp)
 
 
 # References

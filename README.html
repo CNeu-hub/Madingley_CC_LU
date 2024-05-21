@@ -9,11 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="xx xx" />
 
-<meta name="date" content="2024-05-21" />
 
-<title>Readme</title>
+<title>README</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -350,9 +348,6 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Readme</h1>
-<h4 class="author">xx xx</h4>
-<h4 class="date">2024-05-21</h4>
 
 </div>
 
@@ -429,13 +424,11 @@ mdl_prms = madingley_inputs(&quot;model parameters&quot;)
 plot(sptl_inp$hanpp, main=&quot;HANPP in gC/m^2/year&quot;)
 
 #crop the raster to spatial window extent (safe resources while running the model)
-sp_inputs_histo_2014 = crop_spatial_rasters_to_window(inputs = sp_inputs_histo_2014, spatial_window = spatial_window)
+sptl_inp = crop_spatial_rasters_to_window(inputs = sptl_inp, spatial_window = spatial_window)
 
 #plot hanpp raster to see if cropping worked 
-plot(sp_inputs_histo_2014$hanpp)
-
+plot(sptl_inp$hanpp)
 </code></pre>
-<p>plot(sp_inputs_histo_2014$hanpp)</p>
 </div>
 </div>
 <div id="references" class="section level1">

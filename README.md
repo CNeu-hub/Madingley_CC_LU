@@ -41,9 +41,28 @@ source("https://raw.githubusercontent.com/SHoeks/MadingleyR_0.5degree_inputs/mas
 
 ```
 
-## Create MadingleyR inputs 
+## Define study region 
+For this example we use France as our study region.
 
 ```
+#define spatial extent of region, meeting requirements of MadingleyR (min. longitude, max. longitude, min. latitude, max. latitude)
+#spatial_window = c(25.5,28.5,61,69) #96 grid cells, works brilliant, Finland
+#spatial_window = c(16,21,-22,-17) #90 grid cells, works brilliant, Namibia 
+#spatial_window = c(-69,-61,-3,0) #96 grid cells, works brilliant, Brazil 
+spatial_window = c(-1,6,46,49) #84 grid cells, works brilliant, France
+
+#define region
+region <- "France"
+
+#create output path for regional output 
+regionpath <- paste0(getwd(), sep = "/", "Output/", region, sep="/")
+
+#check if region extent is chosen correctly 
+plot_spatialwindow(spatial_window)
+
+```
+![](png/Study_Region_France.pdf){ width=100% height=50% }
+
 envDIR = temp_path <- gettemppath()
 
 #create MadingleyR model inputs

@@ -36,8 +36,11 @@ library("terra")
 #Function to crop spatial raster input of MadingleyR using spatial window
 source("https://raw.githubusercontent.com/SHoeks/RandomMadingleyRFunctions/master/crop_spatial_rasters_to_window.r")
 
-# download and load 0.5 degree inputs
+# download and load 0.5 degree inputs 
 source("https://raw.githubusercontent.com/SHoeks/MadingleyR_0.5degree_inputs/master/DownloadLoadHalfDegreeInputs.R")
+
+#Insert climate data that matches MadingleyR requirements
+source("InsertClimateDataFunction.R") 
 
 ```
 
@@ -63,17 +66,24 @@ plot_spatialwindow(spatial_window)
 ```
 ![](png/Sptl_Wind_France.png)
 
+## Create model inputs 
+Here, we just use standard spatial input of MadingleyR for our example 
+
+```
 envDIR = temp_path <- gettemppath()
 
-#create MadingleyR model inputs
-#here, we just use standard spatial input of madingleyR to provide an example 
-sptl_inp = madingley_inputs("spatial inputs")
+#Create spatial input 
+#Download 0.5 degree Madingley compatible data & create spatial input for model (used in this example)
+sp_inputs = DownloadLoadHalfDegreeInputs(envDIR)
+
+#Alternative 1: Load standard 1 degree spatial input of Madingley
+#sptl_inp = madingley_inputs("spatial inputs") 
+#Alternative 2: Load any climate data input that is matching data requirements (Like the climate data in our study)
+sp_inputs = insert_climate_data("path/to/climate/data") #here it is possible to insert any climate data matching the default madingleyR requirements in 0.5degree resolution
+
 chrt_def = madingley_inputs("cohort definition")
 stck_def = madingley_inputs("stock definition")
 mdl_prms = madingley_inputs("model parameters")
-
-#check if hanpp layer is correctly loaded to madingley
-plot(sptl_inp$hanpp, main="HANPP in gC/m^2/year")
 
 #crop the raster to spatial window extent (safe resources while running the model)
 sptl_inp = crop_spatial_rasters_to_window(inputs = sptl_inp, spatial_window = spatial_window)
@@ -82,6 +92,8 @@ sptl_inp = crop_spatial_rasters_to_window(inputs = sptl_inp, spatial_window = sp
 plot(sptl_inp$hanpp)
 
 ```
+![](png/HANPP_France.png)
+
 
 
 # References

@@ -1,36 +1,39 @@
-# Model-based Impact Analysis of Climate Change and Land-use Intensification on Trohpic Networks 
+# Model-based Impact Analysis of Climate Change and Land-use Intensification on Trohpic Networks
 
-## Overview 
-The repository is divided into three parts: 
+## Overview
 
-* The input folder contains the already aggregated simulation output for each region and climate scenario (the original files were too large to upload to a repository). 
-* The analysis folder contains the scripts needed to run the analysis. 
-* The model run folder contains the scripts needed to run the original model simulations. In order to run this script, additional climate data must be provided by the user (as required by MadingleyR). 
-* The output folder contains all output figures and output tables created in the repository. 
+The repository is divided into five parts:
 
+-   The input folder contains the already aggregated simulation output for each region and climate scenario (the original files were too large to upload to a repository).
+-   The analysis folder contains the scripts needed to run the analysis.
+-   The model run folder contains the scripts needed to run the original model simulations. In order to run this script, additional climate data must be provided by the user (as required by MadingleyR).
+-   The output folder contains all output figures and output tables created in the repository.
+-   The example folder includes the data that is needed to perform our example below.
 
-The climate data used in this study can be found here: 
+The climate data used in this study can be found here:
 
-* [Historical climate scenario](https://doi.org/http://doi.org/10.22033/ESGF/CMIP6.4067)
-* [SSP1-2.6 climate scenario](https://doi.org/http://doi.org/10.22033/ESGF/CMIP6.4067)
-* [SSP5-8.5 climate scenario](https://doi.org/http://doi.org/10.22033/ESGF/CMIP6.4067)
+-   [Historical climate scenario](https://doi.org/http://doi.org/10.22033/ESGF/CMIP6.4067)
+-   [SSP1-2.6 climate scenario](https://doi.org/http://doi.org/10.22033/ESGF/CMIP6.4067)
+-   [SSP5-8.5 climate scenario](https://doi.org/http://doi.org/10.22033/ESGF/CMIP6.4067)
 
 Before the data can be used, they need to be pre-processed to meet the requirements of the MadingleyR package, for example as described in the supplementary material of the study (also available in this repository).
 
-To give an insight into our simulations, we provide here an example of how the simulations in our study are performed with the MadingleyR package. To do this, we use 0.5 degree data (to match the region sizes of our original model simulations) from the standard MadingleyR input datasets.
+To give an insight into our simulations, **we provide here an example of how the simulations in our study are performed** with the MadingleyR package. To do this, we use 0.5 degree data (to match the region sizes of our original model simulations) from the standard MadingleyR input datasets.
 
-We perform the example here with a
+## Create the environment
 
-## Create the environment 
-First we have to create the environment that is necessary to perform the simulations. 
+First we have to create the environment that is necessary to perform the simulations.
 
 1.) We need to install "MadingleyR", following the [instructions](https://github.com/MadingleyR/MadingleyR/blob/master/README.md).
 
-2.) We need to load MadingleyR for performing the simulations and some additional functions provided on Github for preparing data input. 
+2.) We need to load MadingleyR for performing the simulations and some additional functions provided on Github for preparing data input.
 
-```
-library("MadingleyR")
-library("terra")
+``` r
+
+library(MadingleyR)
+library(terra)
+library(dplyr)
+library(ggplot2)
 
 #Source: Hoeks, S. (2022): 
 #Function to crop spatial raster input of MadingleyR using spatial window
@@ -42,64 +45,268 @@ source("https://raw.githubusercontent.com/SHoeks/MadingleyR_0.5degree_inputs/mas
 #Insert climate data that matches MadingleyR requirements
 source("InsertClimateDataFunction.R") 
 
+#Create output path for simulation output
+regionpath <- paste(getwd(), "png/Example_Output", sep = "/")
+
 ```
 
-## Define study region 
+## Define study region
+
 For this example we use France as our study region.
 
-```
+``` r
+
 #define spatial extent of region, meeting requirements of MadingleyR (min. longitude, max. longitude, min. latitude, max. latitude)
-#spatial_window = c(25.5,28.5,61,69) #96 grid cells, works brilliant, Finland
-#spatial_window = c(16,21,-22,-17) #90 grid cells, works brilliant, Namibia 
-#spatial_window = c(-69,-61,-3,0) #96 grid cells, works brilliant, Brazil 
-spatial_window = c(-1,6,46,49) #84 grid cells, works brilliant, France
+#spatial_window <- c(25.5,28.5,61,69) #96 grid cells, works brilliant, Finland
+#spatial_window <- c(16,21,-22,-17) #90 grid cells, works brilliant, Namibia 
+#spatial_window <- c(-69,-61,-3,0) #96 grid cells, works brilliant, Brazil 
+spatial_window <- c(-1,6,46,49) #84 grid cells, works brilliant, France
 
 #define region
 region <- "France"
 
 #create output path for regional output 
-regionpath <- paste0(getwd(), sep = "/", "Output/", region, sep="/")
+regionpath <- paste0(getwd(), sep = "/", "example/", "output", sep="/")
 
 #check if region extent is chosen correctly 
 plot_spatialwindow(spatial_window)
 
 ```
-![](png/Sptl_Wind_France.png)
 
-## Create model inputs 
-Here, we just use standard spatial input of MadingleyR for our example 
+![](example/png/Sptl_Wind_France.png)
 
-```
-envDIR = temp_path <- gettemppath()
+## Create model inputs
+
+Here, we load the spatial input that is needed by the model. For this example we use the default spatial input of MadingleyR in 0.5-degree resolution. In our simulations we used data on three different climate scenarios, that were pre-processed to match MadingleyR requirements. These can be downloaded from the mentioned sources. 
+
+``` r
+
+#create directory for climate data 
+envDIR <- paste(getwd(), "example", "0.5_degree_data", sep = "/")
 
 #Create spatial input 
 #Download 0.5 degree Madingley compatible data & create spatial input for model (used in this example)
-sp_inputs = DownloadLoadHalfDegreeInputs(envDIR)
+sptl_inp <- DownloadLoadHalfDegreeInputs(envDIR)
 
 #Alternative 1: Load standard 1 degree spatial input of Madingley
-#sptl_inp = madingley_inputs("spatial inputs") 
+#sptl_inp <- madingley_inputs("spatial inputs") 
 #Alternative 2: Load any climate data input that is matching data requirements (Like the climate data in our study)
-sp_inputs = insert_climate_data("path/to/climate/data") #here it is possible to insert any climate data matching the default madingleyR requirements in 0.5degree resolution
+#sptl_inp <- insert_climate_data("path/to/climate/data") #here it is possible to insert any climate data matching the default madingleyR requirements in 0.5degree resolution
 
-chrt_def = madingley_inputs("cohort definition")
-stck_def = madingley_inputs("stock definition")
-mdl_prms = madingley_inputs("model parameters")
+chrt_def <- madingley_inputs("cohort definition")
+stck_def <- madingley_inputs("stock definition")
+mdl_prms <- madingley_inputs("model parameters")
 
 #crop the raster to spatial window extent (safe resources while running the model)
-sptl_inp = crop_spatial_rasters_to_window(inputs = sptl_inp, spatial_window = spatial_window)
+sptl_inp <- crop_spatial_rasters_to_window(inputs = sptl_inp, spatial_window = spatial_window)
 
 #plot hanpp raster to see if cropping worked 
-plot(sptl_inp$hanpp)
+plot(sptl_inp$hanpp, main = "HANPP in Study Region", xlab = "Longitude", ylab = "Latitude")
+text(x=5.9, y=48.5, "HANPP [gC/m-2/yr]", xpd=NA, pos=4)
 
 ```
-![](png/HANPP_France.png)
 
+![](example/png/HANPP_France.png)
 
+## Run the model
+
+Now we run the three simulation experiments. In our original simulations, we run each of the experiments for each region and for each climate scenario. First we initialize the model, second we run the climate simulation experiment, third the current land use experiment (hereafter referred to as HANPP), fourth the vegetation reduction experiment, and 5.) the maximum land use experiment after vegetation reduction (hereafter referred to as maxHANPP).
+
+**Note:**
+
+-   We have reduced the number of cohorts and years in this example to speed up the simulations. For our simulations, we run the model for 200 years in each simulation experiment, with a maximum cohort size of 1000.
+-   To create replicates we additionally put the following code in a `for loop` & repeated our simulations 10 times.
+
+### 1.) Initialize the model
+
+``` r
+###------------------###
+### INITIALIZE MODEL ###
+###------------------###
+
+historical_2014 <- madingley_init(spatial_window = spatial_window, 
+                                 cohort_def = chrt_def,
+                                 stock_def = stck_def,
+                                 spatial_inputs = sptl_inp, #run model with default climate data = sptl_input  
+                                 max_cohort = 100)
+                                 
+```
+
+### 2.) Run the climate simulation experiment / spin-up simulation
+
+``` r
+
+###create a list file, where all outputs will be stored
+historical_2014_list <- list()
+
+historical_2014_list[[1]] <- madingley_run(out_dir = regionpath, #path to output directory
+                                          madingley_data = historical_2014,
+                                          years = 100, # at least 200 years recommended
+                                          cohort_def = chrt_def,
+                                          stock_def = stck_def,
+                                          spatial_inputs = sptl_inp,
+                                          model_parameters = mdl_prms,
+                                          max_cohort = 100) # at least 500 is recommended 
+                                          
+```
+
+### 3.) Run the current land use simulation experiment, applying HANPP
+
+``` r
+
+#run model for additional 200 years with applying hanpp as input raster with gC/m-2/year
+historical_2014_list[[2]] <- madingley_run(out_dir = regionpath, #path to output directory
+                                          madingley_data = historical_2014_list[[1]],
+                                          years = 100, # at least 200 years recommended
+                                          cohort_def = chrt_def,
+                                          stock_def = stck_def,
+                                          spatial_inputs = sptl_inp,
+                                          model_parameters = mdl_prms,
+                                          max_cohort = 100, # at least 500 is recommended 
+                                          apply_hanpp = 2)  #apply_hanpp = 2 is to apply hanpp with gC/m-2/year as input
+                                          
+```
+
+### 4.) Reduce the vegetation, by maximizing HANPP
+
+``` r
+
+###-------------------------------------------------------###
+### Simulation Experiment 3: Maximum Land Use (maxHANPP)  ###
+###-------------------------------------------------------###
+
+#calculation of fractional hanpp raster
+sptl_inp$hanpp[] <- sptl_inp$hanpp[] + abs(min(sptl_inp$hanpp[], na.rm = TRUE)) 
+sptl_inp$hanpp[] <- sptl_inp$hanpp[] / max(sptl_inp$hanpp[], na.rm = TRUE)  
+sptl_inp$hanpp[] <- 1-sptl_inp$hanpp[]  # The subtraction 1-HANPP leads to swapped values, this means the lower values are the values with the highest HANPP and the higher values are the values with lowest HANPP --> So, we can assume that a reduction in these values is a reduction in biomass, and not a reduction in HANPP.
+
+#remove NA's
+sptl_inp$hanpp[is.na(sptl_inp$hanpp[])] <- 0.001
+
+###VEGETATION REDUCTION###
+#Create HANPP backup to compare with reduced HANPP later
+hanpp_backup <- sptl_inp$hanpp
+
+#Reduce vegetation using a while loop, stops when needed (no more values above 0.1 in hanpp raster)
+while(max(sptl_inp$hanpp[])>0.1) {
+  
+  #use ifelse to reduce vegetation by 0.1 per 5 years (if its > 0.1), but not below the threshold 0.1
+  sptl_inp$hanpp[] <- ifelse(sptl_inp$hanpp[] > 0.1,
+                                        ifelse(sptl_inp$hanpp[] - 0.1 < 0.1,0.1,sptl_inp$hanpp[] - 0.1),
+                                        sptl_inp$hanpp[])
+  plot(sptl_inp$hanpp)
+  
+  #run the model for 10 years with HANPP reduced by 0.1 (10 %)
+  historical_2014_list[[length(historical_2014_list)+1]] <- madingley_run(out_dir = regionpath,
+                                                                         years = 10, 
+                                                                         madingley_data = historical_2014_list[[length(historical_2014_list)]],
+                                                                         spatial_inputs = sptl_inp,
+                                                                         silenced = TRUE,
+                                                                         max_cohort = 100, # at least 500
+                                                                         apply_hanpp = 1) 
+}
+
+par(mfrow=c(1,2))
+plot(hanpp_backup,main="Starting HANPP", xlab = "Longitude", "Latitude")
+plot(sptl_inp$hanpp,main="HANPP Reduced to Maximum of 0.1", xlab = "Longitude", ylab = "Latitude")
+par(mfrow=c(1,1))
+
+```
+
+![](example/png/Veg_Red.png)
+
+### 5.) Run the maximum land use experiment (Post-vegetation reduction phase)
+
+``` r
+
+###POST VEGETATION REDUCTION###
+historical_2014_list[[length(historical_2014_list)+1]] <- madingley_run(out_dir = regionpath,
+                                                                        madingley_data = historical_2014_list[[length(historical_2014_list)]], 
+                                                                        years = 100, #at least 200
+                                                                        model_parameters = mdl_prms, 
+                                                                        spatial_inputs = sptl_inp,
+                                                                        cohort_def = chrt_def,
+                                                                        max_cohort = 100, #at least 500
+                                                                        apply_hanpp = 1)
+                                                                        
+```
+
+### 6.) Plot biomass timelines
+
+``` r
+
+autotroph_biomass <- data.frame()  # Initialize an empty data frame
+
+# Concatenate the data frames and keep track of the total years
+for (i in 1:length(historical_2014_list)) {
+
+  x <- historical_2014_list[[i]]$time_line_stocks
+  
+  autotroph_biomass <- rbind(autotroph_biomass, x)
+  
+}
+
+autotroph_biomass$Month <- seq(1, 4192, 1)
+
+FG_biomass <- data.frame()  # Initialize an empty data frame
+
+# Concatenate the data frames and keep track of the total years
+for (i in 1:length(historical_2014_list)) {
+
+  x <- historical_2014_list[[i]]$time_line_cohorts
+  
+  FG_biomass <- rbind(FG_biomass, x)
+  
+}
+
+FG_biomass$Month <- seq(1, 4192, 1)
+
+#summarize ectotherms biomass: 
+FG_biomass <- FG_biomass %>% rowwise() %>% 
+  dplyr::mutate(Biomass_FG_3 = sum(c(Biomass_FG_3,Biomass_FG_6)),Biomass_FG_4 = sum(c(Biomass_FG_4,Biomass_FG_7)),Biomass_FG_5 = sum(c(Biomass_FG_5, Biomass_FG_8))) %>%
+  summarize(Month,Year,Biomass_FG_0,Biomass_FG_1,Biomass_FG_2,Biomass_FG_3,Biomass_FG_4,Biomass_FG_5) %>%
+  ungroup() %>%   as.data.frame()
+
+#add autotroph biomass to heterotroph biomass for timelines plot
+Biomass <- cbind(FG_biomass,autotroph_biomass$TotalStockBiomass)
+
+ggplot(data=Biomass, aes(x=Month/12))+
+  geom_line(aes(y=log10(autotroph_biomass$TotalStockBiomass),colour="Autotrophs"),linewidth=0.8)+
+  geom_line(aes(y=log10(Biomass_FG_0),colour="End. Herbivores"),linewidth=0.8)+
+  geom_line(aes(y=log10(Biomass_FG_1),colour="End. Carnivores"),linewidth=0.8)+
+  geom_line(aes(y=log10(Biomass_FG_2),colour="End. Omnivores"),linewidth=0.8)+
+  geom_line(aes(y=log10(Biomass_FG_3),colour="Ect. Herbivores"),linewidth=0.8)+
+  geom_line(aes(y=log10(Biomass_FG_4),colour="Ect. Carnivores"),linewidth=0.8)+
+  geom_line(aes(y=log10(Biomass_FG_5),colour="Ect. Omnivores"),linewidth=0.8)+
+  scale_colour_manual(name = "Functional Group", values = c("Autotrophs"="#009E73",
+                                                            "End. Herbivores" = "#CC79A7",
+                                                            "End. Carnivores" = "#E69F00",
+                                                            "End. Omnivores" = "#56B4E9",
+                                                            "Ect. Herbivores" = "#F0E442",
+                                                            "Ect. Carnivores" = "#0072B2",
+                                                            "Ect. Omnivores" = "#D55E00"))+
+  geom_vline(xintercept = c(100, 200, 210, 220, 230, 240, 250, 350),linetype="dashed",alpha =0.2)+
+  scale_x_continuous(breaks=c(0,100,200,300,350),limits = c(0,350), expand = c(0,0,0.01,0))+
+  labs(x='Year of Simulation', y = "Log10 Biomass [kg]", title = "Biomass Timelines France (Example)")+
+  annotate("text", label=c("1. Climate","2. Current Land Use","Land-use Intensification", "3. Maximum Land Use"),
+           x=c(50, 150, 240, 300),y=c(12, 12, 2.5, 12), size=6.5, fontface=c("bold","bold","italic","bold"))+
+  theme_classic()+
+  theme(plot.title = element_text(face = "bold", hjust =0.5, size = 20))+
+  theme(axis.text.y = element_text(size = 14), 
+        axis.title.y = element_text(margin = margin(t = 0, r = 5, b = 0, l = 0),size=14)) +
+  theme(axis.text.x = element_text(size = 14),
+        axis.title.x = element_text(margin = margin(t = 5, r = 0, b = 0, l = 0),size=14))+
+  theme(legend.text = element_text(size=14),legend.title = element_text(size=14,face="bold")) +
+  theme(legend.position = "bottom") 
+
+```
+
+![](example/png/Biomass_Timelines.png)
 
 # References
-Voldoire, A. 2019a. CNRM-CERFACS CNRM-CM6-1-HR model output prepared for CMIP6 CMIP historical (No. 20191021). doi: https://doi.org/http://doi.org/10.22033/ESGF/CMIP6.4067.
 
-Voldoire, A. 2019b. CNRM-CERFACS CNRM-CM6-1-HR model output prepared for CMIP6 ScenarioMIP ssp126 (No. 20200127). doi: https://doi.org/http://doi.org/10.22033/ESGF/CMIP6.4067.
+Voldoire, A. 2019a. CNRM-CERFACS CNRM-CM6-1-HR model output prepared for CMIP6 CMIP historical (No. 20191021). doi: <https://doi.org/http://doi.org/10.22033/ESGF/CMIP6.4067>.
 
-Voldoire, A. 2019c. CNRM-CERFACS CNRM-CM6-1-HR model output prepared for CMIP6 ScenarioMIP ssp585 (No. 20191202). doi: https://doi.org/http://doi.org/10.22033/ESGF/CMIP6.4067.
+Voldoire, A. 2019b. CNRM-CERFACS CNRM-CM6-1-HR model output prepared for CMIP6 ScenarioMIP ssp126 (No. 20200127). doi: <https://doi.org/http://doi.org/10.22033/ESGF/CMIP6.4067>.
 
+Voldoire, A. 2019c. CNRM-CERFACS CNRM-CM6-1-HR model output prepared for CMIP6 ScenarioMIP ssp585 (No. 20191202). doi: <https://doi.org/http://doi.org/10.22033/ESGF/CMIP6.4067>.

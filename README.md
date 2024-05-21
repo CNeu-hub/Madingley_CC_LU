@@ -61,7 +61,7 @@ regionpath <- paste0(getwd(), sep = "/", "Output/", region, sep="/")
 plot_spatialwindow(spatial_window)
 
 ```
-![](png/Study_Region_France.pdf){ width=100% height=50% }
+![](png/Study_Region_France.pdf)
 
 envDIR = temp_path <- gettemppath()
 

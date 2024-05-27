@@ -17,24 +17,19 @@ library(MadingleyR)
 ###---------------------------------------------------------------------------###
 ###                          CREATE SETTINGS / ENVIRONMENT                    ###
 ###---------------------------------------------------------------------------###
-source("settings.R")
 source("InsertClimateDataFunction.R") 
 
-myoutpath <- outpath   # outpath in RData will override local outpath settings, see below
-myfigpath <- figpath
-
-#load spatial input madingley / filter for year
-#sp_inputs = insert_climate_data("/Users/neumanch/Desktop/Thesis/bpm-madingley/Christians Projects/MadingleyR_Sep_2023/ClimateData/Historical_Averaged_0.5degree/")
-#sp_inputs = insert_climate_data("/Users/neumanch/Desktop/Thesis/bpm-madingley/Christians Projects/MadingleyR_Sep_2023/ClimateData/SSP126_Averaged_0.5degree/")
-sp_inputs = insert_climate_data("/Users/neumanch/Desktop/Thesis/bpm-madingley/Christians Projects/MadingleyR_Sep_2023/ClimateData/SSP585_Averaged_0.5degree/")
+#create datapath
+datapath <- paste(getwd(), "Output", sep = "/")
+  
+#load spatial input madingley 
+sp_inputs = insert_climate_data("/Path/to/climate/data/")
 
 #manual definition of climate scenario
-#scenario <- "Historical"
+scenario <- "Historical"
 #scenario <- "SSP1-2.6"
-scenario <- "SSP5-8.5"
+#scenario <- "SSP5-8.5"
 
-#create new datapath to store output 
-datapath <- paste0(figpath,"data_climate_rasters",sep="/")
 #create folder to store data
 ifelse(!dir.exists(file.path(datapath)),dir.create(file.path(datapath)),print("This folder already exists"))
 
@@ -96,7 +91,6 @@ finland_HANPP <- crop(HANPP,ext_fi)
 ###    
 #1. HANPP 
 #analysis
-?cellStats
 hanpp_summary <- data.frame("Region" = c("Brazil","Namibia","France","Finland"),
                             "Mean" = c(cellStats(brazil_HANPP$hanpp_2005,stat=mean,na.rm=T),cellStats(namibia_HANPP$hanpp_2005,stat=mean,na.rm=T),cellStats(france_HANPP$hanpp_2005,stat=mean,na.rm=T),cellStats(finland_HANPP$hanpp_2005,stat=mean,na.rm=T)),
                             "SD" = c(cellStats(brazil_HANPP$hanpp_2005,stat=sd,na.rm=T),cellStats(namibia_HANPP$hanpp_2005,stat=sd,na.rm=T),cellStats(france_HANPP$hanpp_2005,stat=sd,na.rm=T),cellStats(finland_HANPP$hanpp_2005,stat=sd,na.rm=T)),
@@ -150,5 +144,6 @@ write.csv(pr_summary,datapath %+% paste0("pr_summary","_",scenario,".csv"))
 
 all <- rbind(hanpp_summary, npp_summary, tas_summary, pr_summary)
 all[2:5] <- round(all[2:5], digits = 2)
+
 write.csv(all,datapath %+% paste0("Climate_Summary","_",scenario,".csv"))
 

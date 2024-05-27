@@ -631,14 +631,21 @@ strip_variation <- ggh4x::strip_themed(
   text_y = elem_list_text(face = c("bold")),
   by_layer_y = FALSE)
 
-pdf(paste(getwd(),"Output","Figure4.pdf", sep = "/"),width = 10, height = 10, paper="special")
+if(FGs == "aggregated") {
+  pdf(paste(getwd(),"Output","Figure4.pdf", sep = "/"),width = 10, height = 10, paper="special")
+} else {
+  pdf(paste(getwd(),"Output","FigureS3.1.pdf", sep = "/"),width = 10, height = 10, paper="special")
+}
+       
+col <- rev(RColorBrewer::brewer.pal(9, name = "Blues"))
 
 #ggplot heatmap with geom_tile & facet_grid
 ggplot(test3, aes(x = X2, y = X1, fill = value)) +
   geom_tile() +  
-  geom_text(aes(label = value), color = ifelse(test3$value > 0, "black", "white"), size = 4) +
+  geom_text(aes(label = value), color = ifelse(test3$value > -4, "black", "white"), size = 4) +
   #coord_fixed()
-  scale_fill_viridis(option = "inferno", breaks = seq(-6, 1, 1)) +
+  #scale_fill_viridis(option = "inferno", breaks = seq(-6, 1, 1)) +
+  scale_fill_gradientn(colours = col) + 
   ggh4x::facet_grid2(rows = vars(Region),cols = vars(`Simulation Experiment`), scales = "free", space = "free", switch = "x", strip = strip_variation) +
   labs(fill = "Slope Value", y = "Functional Group", x = "Simulation Experiment") +
   scale_y_discrete(labels = rev(row_labels), limits = rev, expand = c(0,0)) +

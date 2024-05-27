@@ -20,11 +20,10 @@ library(boot)#bootstrap CIs
 ###                          CREATE SETTINGS / ENVIRONMENT                    ###
 ###---------------------------------------------------------------------------###
 #define input path (Output_Data in repository)
-myoutpath <- "/Users/neumanch/Desktop/Thesis/bpm-madingley/Christians Projects/MadingleyR_Sep_2023/Outpath"
-outpath <- myoutpath
+outpath <- paste(getwd(), "Input", sep = "/")
+
 #define output path (Output_CSV in repository)
-myfigpath <- "/Users/neumanch/Desktop/Thesis/bpm-madingley/Christians Projects/MadingleyR_Sep_2023/Figpath"
-figpath <-myfigpath
+figpath <- paste(getwd(), "Output", sep = "/")
 
 ###--------###
 ### BRAZIL ###
@@ -35,15 +34,11 @@ figpath <-myfigpath
 #entry 3 - 12 = vegetation reduction stages, 
 #last entry = 13 = post reduction run (with 0.1 vegetation left)
 load(paste0(outpath,sep="/","Brazil",sep="/","Output_Summary.Rdata"))
-outpath <- myoutpath
-figpath <- myfigpath
-
-regionpath <- paste0(figpath,sep="/",dir.create(file.path(figpath, "Brazil"), showWarnings = FALSE),sep="/")
 
 ###-----------------------------------------------------------------###
 ###  1.                      DATA PREPARATION                       ###
 ###-----------------------------------------------------------------###
-#1. Create df for control + sum up monthly biomass of each scenario (overall effect), filter = > Month 1080, last 10 years
+#1. Create df for control + sum up monthly biomass of each scenario (overall effect), filter = > Month 2280, last 10 years
 #historical
 cohorts_historical_control <- historical_2014_list[[1]]$time_line_cohorts %>% filter(Month > 2280) %>% rowwise() %>% 
   dplyr::mutate(BiomassSum = sum(c(Biomass_FG_0,Biomass_FG_1,Biomass_FG_2,Biomass_FG_3,Biomass_FG_4,Biomass_FG_5,Biomass_FG_6,Biomass_FG_7,Biomass_FG_8)),
@@ -59,6 +54,7 @@ cohorts_SSP2.6_2100_control <- SSP126_2100_list[[1]]$time_line_cohorts %>% filte
                 Biomass_FG_3 = sum(c(Biomass_FG_3,Biomass_FG_6)),Biomass_FG_4 = sum(c(Biomass_FG_4,Biomass_FG_7)),Biomass_FG_5 = sum(c(Biomass_FG_5, Biomass_FG_8))) %>%
   summarize(Month,Year,Biomass_FG_0,Biomass_FG_1,Biomass_FG_2,Biomass_FG_3,Biomass_FG_4,Biomass_FG_5,BiomassSum,Scenario,Group) %>%
   ungroup() %>%   as.data.frame()
+
 #SSP8.5_2100
 cohorts_SSP8.5_2100_control <- SSP585_2100_list[[1]]$time_line_cohorts %>% filter(Month > 2280) %>% rowwise() %>% 
   dplyr::mutate(BiomassSum = sum(c(Biomass_FG_0,Biomass_FG_1,Biomass_FG_2,Biomass_FG_3,Biomass_FG_4,Biomass_FG_5,Biomass_FG_6,Biomass_FG_7,Biomass_FG_8)),
@@ -198,15 +194,11 @@ climate <- rbind(effect_hist_SSP126,effect_hist_SSP585)
 #entry 3 - 12 = vegetation reduction stages, 
 #last entry = 13 = post reduction run (with 0.1 vegetation left)
 load(paste0(outpath,sep="/","Namibia",sep="/","Output_Summary.Rdata"))
-outpath <- myoutpath
-figpath <- myfigpath
-
-regionpath <- paste0(figpath,sep="/",dir.create(file.path(figpath, "Namibia"), showWarnings = FALSE),sep="/")
 
 ###-----------------------------------------------------------------###
 ###  1.                      DATA PREPARATION                       ###
 ###-----------------------------------------------------------------###
-#1. Create df for control + sum up monthly biomass of each scenario (overall effect), filter = > Month 1080, last 10 years
+#1. Create df for control + sum up monthly biomass of each scenario (overall effect), filter = > Month 2280, last 10 years
 #historical
 cohorts_historical_control <- historical_2014_list[[1]]$time_line_cohorts %>% filter(Month > 2280) %>% rowwise() %>% 
   dplyr::mutate(BiomassSum = sum(c(Biomass_FG_0,Biomass_FG_1,Biomass_FG_2,Biomass_FG_3,Biomass_FG_4,Biomass_FG_5,Biomass_FG_6,Biomass_FG_7,Biomass_FG_8)),
@@ -329,15 +321,11 @@ climate <- rbind(climate,effect_hist_SSP126,effect_hist_SSP585)
 #entry 3 - 12 = vegetation reduction stages, 
 #last entry = 13 = post reduction run (with 0.1 vegetation left)
 load(paste0(outpath,sep="/","France",sep="/","Output_Summary.Rdata"))
-outpath <- myoutpath
-figpath <- myfigpath
-
-regionpath <- paste0(figpath,sep="/",dir.create(file.path(figpath, "France"), showWarnings = FALSE),sep="/")
 
 ###-----------------------------------------------------------------###
 ###  1.                      DATA PREPARATION                       ###
 ###-----------------------------------------------------------------###
-#1. Create df for control + sum up monthly biomass of each scenario (overall effect), filter = > Month 1080, last 10 years
+#1. Create df for control + sum up monthly biomass of each scenario (overall effect), filter = > Month 2280, last 10 years
 #historical
 cohorts_historical_control <- historical_2014_list[[1]]$time_line_cohorts %>% filter(Month > 2280) %>% rowwise() %>% 
   dplyr::mutate(BiomassSum = sum(c(Biomass_FG_0,Biomass_FG_1,Biomass_FG_2,Biomass_FG_3,Biomass_FG_4,Biomass_FG_5,Biomass_FG_6,Biomass_FG_7,Biomass_FG_8)),
@@ -460,15 +448,11 @@ climate <- rbind(climate,effect_hist_SSP126,effect_hist_SSP585)
 #entry 3 - 12 = vegetation reduction stages, 
 #last entry = 13 = post reduction run (with 0.1 vegetation left)
 load(paste0(outpath,sep="/","Finland",sep="/","Output_Summary.Rdata"))
-outpath <- myoutpath
-figpath <- myfigpath
-
-regionpath <- paste0(figpath,sep="/",dir.create(file.path(figpath, "Finland"), showWarnings = FALSE),sep="/")
 
 ###-----------------------------------------------------------------###
 ###  1.                      DATA PREPARATION                       ###
 ###-----------------------------------------------------------------###
-#1. Create df for control + sum up monthly biomass of each scenario (overall effect), filter = > Month 1080, last 10 years
+#1. Create df for control + sum up monthly biomass of each scenario (overall effect), filter = > Month 2280, last 10 years
 #historical
 cohorts_historical_control <- historical_2014_list[[1]]$time_line_cohorts %>% filter(Month > 2280) %>% rowwise() %>% 
   dplyr::mutate(BiomassSum = sum(c(Biomass_FG_0,Biomass_FG_1,Biomass_FG_2,Biomass_FG_3,Biomass_FG_4,Biomass_FG_5,Biomass_FG_6,Biomass_FG_7,Biomass_FG_8)),
@@ -590,6 +574,7 @@ climate <- climate %>%
 names(climate)=c("Region","Scenario","Functional Group","Effect Size","Lower CI","Upper CI")
 
 climate$Scenario <- ifelse(climate$Scenario=="Historical/SSP1-2.6","SSP1-2.6","SSP5-8.5")
+
 #export df as csv 
 write.csv(climate,paste0(figpath,sep="/","Climate_Effect.csv"))
 

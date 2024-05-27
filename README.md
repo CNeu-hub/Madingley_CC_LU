@@ -1,4 +1,4 @@
-# Model-based Impact Analysis of Climate Change and Land-use Intensification on Trohpic Networks
+# Model-based Impact Analysis of Climate Change and Land-use Intensification on Trophic Networks
 
 #### Author: xx
 #### Date: 23.05.2024

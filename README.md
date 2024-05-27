@@ -5,9 +5,10 @@
 
 ## Overview
 
-The repository is divided into five folders:
+The repository includes six folders:
 
--  The input folder contains the already aggregated simulation output for each region and climate scenario needed to run the analysis scripts (the original files were too large to upload to a repository).The script used to aggregate the simulation results across replicates can be found in the model run folder ("Aggregate_Output.R")
+-  The input folder contains the already aggregated simulation output for each region and climate scenario needed to run the analysis scripts (the original files were too large to upload to a repository).
+-  The pre-processing folder includes the script to calculate the 30-year averages of the climate data, and the script used to aggregate the simulation results across replicates can be found in the model run folder ("Aggregate_Output.R").
 -  The analysis folder contains the scripts needed to run the analysis and plot the figures used in the manuscript and SI. 
 -  The model run folder contains the scripts needed to run the original model simulations. In order to run this script, additional climate data must be provided by the user (as required by MadingleyR).
 -  The output folder contains all output figures and output tables created in the repository.
@@ -21,7 +22,12 @@ The climate data used in this study can be found here:
 
 Before the data can be used, they need to be pre-processed to meet the requirements of the MadingleyR package, for example as described in the supplementary material of the study (also available in this repository).
 
-All analysis scripts can be run using the aggregated simulation output in the input folder of the repository. The climate data we used for our simulations is too large to upload to a repository, so we have created an example here to allow you to follow our workflow. The original script can be found in the Model_Run folder and can be run with climate data that meets the requirements (not given here).
+All analysis scripts can be run using the aggregated simulation output in the input folder of the repository. The climate data we used for our simulations is too large to upload to a repository, so we have created an example here to allow you to follow our workflow. The original script can be found in the Model_Run folder and can be run with climate data that meets the requirements (not given here). 
+
+**Note:** 
+
+- The paths may need to be changed for some scripts (mainly the climate data pre-processing/model output scripts) according to your directory.
+- The names of the simulation experiments partly differ from the names in the manuscript. For example, HANPP refers to the current land use and maxHANPP refers to the maximum land use simulation. 
 
 To give an insight into our simulations, **we provide here an example of how the simulations in our study are performed** using the MadingleyR package. We use 0.5 degree data (to match the region sizes of our original model simulations) from the standard MadingleyR input datasets.
 
@@ -37,8 +43,7 @@ First we have to create the environment that is necessary to perform the simulat
 
 library(MadingleyR)
 library(terra)
-library(dplyr)
-library(ggplot2)
+library(tidyverse)
 
 #Source: Hoeks, S. (2022): 
 #Function to crop spatial raster input of MadingleyR using spatial window

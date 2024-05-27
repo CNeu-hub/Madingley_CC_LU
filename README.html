@@ -363,13 +363,15 @@ Intensification on Trohpic Networks</h1>
 </div>
 <div id="overview" class="section level2">
 <h2>Overview</h2>
-<p>The repository is divided into five folders:</p>
+<p>The repository includes six folders:</p>
 <ul>
 <li>The input folder contains the already aggregated simulation output
 for each region and climate scenario needed to run the analysis scripts
-(the original files were too large to upload to a repository).The script
-used to aggregate the simulation results across replicates can be found
-in the model run folder (“Aggregate_Output.R”)</li>
+(the original files were too large to upload to a repository).</li>
+<li>The pre-processing folder includes the script to calculate the
+30-year averages of the climate data, and the script used to aggregate
+the simulation results across replicates can be found in the model run
+folder (“Aggregate_Output.R”).</li>
 <li>The analysis folder contains the scripts needed to run the analysis
 and plot the figures used in the manuscript and SI.</li>
 <li>The model run folder contains the scripts needed to run the original
@@ -399,6 +401,15 @@ for our simulations is too large to upload to a repository, so we have
 created an example here to allow you to follow our workflow. The
 original script can be found in the Model_Run folder and can be run with
 climate data that meets the requirements (not given here).</p>
+<p><strong>Note:</strong></p>
+<ul>
+<li>The paths may need to be changed for some scripts (mainly the
+climate data pre-processing/model output scripts) according to your
+directory.</li>
+<li>The names of the simulation experiments partly differ from the names
+in the manuscript. For example, HANPP refers to the current land use and
+maxHANPP refers to the maximum land use simulation.</li>
+</ul>
 <p>To give an insight into our simulations, <strong>we provide here an
 example of how the simulations in our study are performed</strong> using
 the MadingleyR package. We use 0.5 degree data (to match the region
@@ -416,8 +427,7 @@ input.</p>
 <pre class="r"><code>
 library(MadingleyR)
 library(terra)
-library(dplyr)
-library(ggplot2)
+library(tidyverse)
 
 #Source: Hoeks, S. (2022): 
 #Function to crop spatial raster input of MadingleyR using spatial window

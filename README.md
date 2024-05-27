@@ -1,14 +1,17 @@
 # Model-based Impact Analysis of Climate Change and Land-use Intensification on Trohpic Networks
 
+#### Author: xx
+#### Date: 23.05.2024
+
 ## Overview
 
-The repository is divided into five parts:
+The repository is divided into five folders:
 
--   The input folder contains the already aggregated simulation output for each region and climate scenario (the original files were too large to upload to a repository).
--   The analysis folder contains the scripts needed to run the analysis.
--   The model run folder contains the scripts needed to run the original model simulations. In order to run this script, additional climate data must be provided by the user (as required by MadingleyR).
--   The output folder contains all output figures and output tables created in the repository.
--   The example folder includes the data that is needed to perform our example below.
+-  The input folder contains the already aggregated simulation output for each region and climate scenario needed to run the analysis scripts (the original files were too large to upload to a repository).The script used to aggregate the simulation results across replicates can be found in the model run folder ("Aggregate_Output.R")
+-  The analysis folder contains the scripts needed to run the analysis and plot the figures used in the manuscript and SI. 
+-  The model run folder contains the scripts needed to run the original model simulations. In order to run this script, additional climate data must be provided by the user (as required by MadingleyR).
+-  The output folder contains all output figures and output tables created in the repository.
+-  The example folder contains the data needed to run our example below.
 
 The climate data used in this study can be found here:
 
@@ -18,11 +21,13 @@ The climate data used in this study can be found here:
 
 Before the data can be used, they need to be pre-processed to meet the requirements of the MadingleyR package, for example as described in the supplementary material of the study (also available in this repository).
 
-To give an insight into our simulations, **we provide here an example of how the simulations in our study are performed** with the MadingleyR package. To do this, we use 0.5 degree data (to match the region sizes of our original model simulations) from the standard MadingleyR input datasets.
+All analysis scripts can be run using the aggregated simulation output in the input folder of the repository. The climate data we used for our simulations is too large to upload to a repository, so we have created an example here to allow you to follow our workflow. The original script can be found in the Model_Run folder and can be run with climate data that meets the requirements (not given here).
+
+To give an insight into our simulations, **we provide here an example of how the simulations in our study are performed** using the MadingleyR package. We use 0.5 degree data (to match the region sizes of our original model simulations) from the standard MadingleyR input datasets.
 
 ## Create the environment
 
-First we have to create the environment that is necessary to perform the simulations.
+First we have to create the environment that is necessary to perform the simulations. 
 
 1.) We need to install "MadingleyR", following the [instructions](https://github.com/MadingleyR/MadingleyR/blob/master/README.md).
 
@@ -52,15 +57,15 @@ regionpath <- paste(getwd(), "png/Example_Output", sep = "/")
 
 ## Define study region
 
-For this example we use France as our study region.
+MadingleyR  uses as input the spatial extent defined as a vector (spatial_window): c(min. longitude, max. longitude, min. latitude, max. latitude) to define its simulation region. For this example we use France as our study region.
 
 ``` r
 
 #define spatial extent of region, meeting requirements of MadingleyR (min. longitude, max. longitude, min. latitude, max. latitude)
-#spatial_window <- c(25.5,28.5,61,69) #96 grid cells, works brilliant, Finland
-#spatial_window <- c(16,21,-22,-17) #90 grid cells, works brilliant, Namibia 
-#spatial_window <- c(-69,-61,-3,0) #96 grid cells, works brilliant, Brazil 
-spatial_window <- c(-1,6,46,49) #84 grid cells, works brilliant, France
+#spatial_window <- c(25.5,28.5,61,69) #96 grid cells, Finland
+#spatial_window <- c(16,21,-22,-17) #90 grid cells, Namibia 
+#spatial_window <- c(-69,-61,-3,0) #96 grid cells, Brazil 
+spatial_window <- c(-1,6,46,49) #84 grid cells, France
 
 #define region
 region <- "France"
@@ -77,7 +82,8 @@ plot_spatialwindow(spatial_window)
 
 ## Create model inputs
 
-Here, we load the spatial input that is needed by the model. For this example we use the default spatial input of MadingleyR in 0.5-degree resolution. In our simulations we used data on three different climate scenarios, that were pre-processed to match MadingleyR requirements. These can be downloaded from the mentioned sources. 
+Before we can initialize the model, we need to load the inputs required by the model. MadingleyR needs information on cohorts (chrt_def), stocks (stck_def), model parameters (mdl_prms) and the spatial climate data (sptl_inp).
+This is where we load the spatial input required by the model. For this example, we use the standard MadingleyR spatial input at 0.5 degree resolution. In our simulations we have used data for three different climate scenarios, which have been pre-processed to meet the requirements of MadingleyR. These can be downloaded from the above sources. 
 
 ``` r
 
@@ -110,7 +116,12 @@ text(x=5.9, y=48.5, "HANPP [gC/m-2/yr]", xpd=NA, pos=4)
 
 ## Run the model
 
-Now we run the three simulation experiments. In our original simulations, we run each of the experiments for each region and for each climate scenario. First we initialize the model, second we run the climate simulation experiment, third the current land use experiment (hereafter referred to as HANPP), fourth the vegetation reduction experiment, and 5.) the maximum land use experiment after vegetation reduction (hereafter referred to as maxHANPP).
+Now we run the three simulation experiments. In our original simulations, we run each of the experiments for each region and for each climate scenario.  For the sake of simplicity, we only use an exemplary standard setup here. The following steps are carried out 
+1) Initialise the model, 
+2) Running the climate simulation experiment, 
+3) The current land use experiment (hereafter referred to as HANPP), 
+4) The vegetation reduction experiment,  
+5) The maximum land use experiment after vegetation reduction (hereafter referred to as maxHANPP).
 
 **Note:**
 
@@ -232,6 +243,8 @@ historical_2014_list[[length(historical_2014_list)+1]] <- madingley_run(out_dir 
 ```
 
 ### 6.) Plot biomass timelines
+
+To visualise our example, we plot the timelines for the autotrophic and heterotrophic biomass functional groups. The decrease in biomass due to the reduction of vegetation in step 4) is clearly visible and marked with the label 'land use intensification'.
 
 ``` r
 

@@ -219,7 +219,8 @@ while(max(sptl_inp$hanpp[])>0.1) {
                                                                          spatial_inputs = sptl_inp,
                                                                          silenced = TRUE,
                                                                          max_cohort = 100, # at least 500
-                                                                         apply_hanpp = 1) 
+                                                                         apply_hanpp = 1) #apply_hanpp = 1, reduces NPP in fractions provided in the hanpp spatial input raster, a fraction of 0.9 represent a 0.1 reduction in autotroph productivity.
+
 }
 
 par(mfrow=c(1,2))

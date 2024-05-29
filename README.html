@@ -571,6 +571,19 @@ historical_2014_list[[2]] &lt;- madingley_run(out_dir = regionpath, #path to out
 </div>
 <div id="reduce-the-vegetation-by-maximizing-hanpp" class="section level3">
 <h3>4.) Reduce the vegetation, by maximizing HANPP</h3>
+<p>To reduce vegetation by maximizing HANPP, we first normalize the
+HANPP raster to a zero to one scale. Since fractional values in the
+MadingleyR model reduce NPP as a factor, a value of 0.9 represents a 0.1
+reduction in autotroph productivity. We therefore invert the values of
+the HANPP raster. High HANPP values become low values (but with the
+highest HANPP) and low HANPP values become high values (but with the
+lowest HANPP). Assuming that the high values are grid cells with low
+HANPP and still vegetation, we reduce the vegetation by 0.1 to a minimum
+of 0.1 in each grid cell (90% HANPP intensity) while running the model
+for 10 years.</p>
+<p>Areas with values &lt; 0.1 are grid cells where the HANPP intensity
+was already above the 90% threshold (&gt; 0.9) before the HANPP grid was
+modified.</p>
 <pre class="r"><code>
 ###-------------------------------------------------------###
 ### Simulation Experiment 3: Maximum Land Use (maxHANPP)  ###

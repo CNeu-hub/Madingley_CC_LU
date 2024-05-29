@@ -185,6 +185,10 @@ historical_2014_list[[2]] <- madingley_run(out_dir = regionpath, #path to output
 
 ### 4.) Reduce the vegetation, by maximizing HANPP
 
+To reduce vegetation by maximizing HANPP, we first normalize the HANPP raster to a zero to one scale. Since fractional values in the MadingleyR model reduce NPP as a factor, a value of 0.9 represents a 0.1 reduction in autotroph productivity. We therefore invert the values of the HANPP raster. High HANPP values become low values (but with the highest HANPP) and low HANPP values become high values (but with the lowest HANPP). Assuming that the high values are grid cells with low HANPP and still vegetation, we reduce the vegetation by 0.1 to a minimum of 0.1 in each grid cell (90% HANPP intensity) while running the model for 10 years. 
+
+Areas with values < 0.1 are grid cells where the HANPP intensity was already above the 90% threshold (> 0.9) before the HANPP grid was modified. 
+
 ``` r
 
 ###-------------------------------------------------------###
@@ -234,6 +238,8 @@ par(mfrow=c(1,1))
 
 ### 5.) Run the maximum land use experiment (Post-vegetation reduction phase)
 
+After the vegetation reduction in the model, we run the model again for 100 years (200 in our original simulations) to allow the model to reach a stable state again. 
+
 ``` r
 
 ###POST VEGETATION REDUCTION###
@@ -250,7 +256,7 @@ historical_2014_list[[length(historical_2014_list)+1]] <- madingley_run(out_dir 
 
 ### 6.) Plot biomass timelines
 
-To visualise our example, we plot the timelines for the autotrophic and heterotrophic biomass functional groups. The decrease in biomass due to the reduction of vegetation in step 4) is clearly visible and marked with the label 'land use intensification'.
+To visualize our example, we plot the biomass timelines for the autotroph and heterotroph functional groups. The decrease in biomass due to the reduction of vegetation in step 4) is clearly visible and marked with the label 'land use intensification'.
 
 ``` r
 

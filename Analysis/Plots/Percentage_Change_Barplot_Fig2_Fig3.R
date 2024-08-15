@@ -30,6 +30,13 @@ Max_LU$Scenario <- "Maximum Land Use"
 
 All <- rbind(Climate,Current_LU,Max_LU)
 
+#create labels for facet wraps 
+labels_tot_bio <- c(
+  `Climate` = "(a) Climate",
+  `Current Land Use` = "(b) Current Land Use",
+  `Maximum Land Use` = "(c) Maximum Land Use"
+)
+
 #check color blind palette #we use Rcolorbrewer Set2 here
 display.brewer.all(colorblindFriendly = T)
 
@@ -40,18 +47,19 @@ Brazil$Functional.Group <- factor(Brazil$Functional.Group, levels=rev(c("Ect. Om
 Brazil_plot <- ggplot(data=Brazil)+
   geom_bar(stat="identity",aes(x=Effect.Size,y=Functional.Group,fill=Climate),position="dodge")+
   geom_errorbar(stat="identity",aes(xmax=Upper.CI,xmin=Lower.CI,y=Functional.Group,group=Climate),position=position_dodge(0.9),linewidth=0.2,width=0.2)+
-  facet_wrap(vars(Scenario))+#,scales = "free_x")+
+  facet_wrap(vars(Scenario), labeller = as_labeller(labels_tot_bio))+#,scales = "free_x")+
   scale_x_continuous(breaks=seq(-12,1,2))+
   scale_fill_brewer(palette="Set2",direction = 1)+  
   labs(title="Brazil", x='Effect Size (% Change)', y = "Functional Group (FG)",col="Climate Scenario")+
   geom_vline(xintercept=0, color='black', linetype='dashed') +
   theme_classic()+
-  theme(axis.text.y = element_text(face = c('bold','plain', 'plain', 'plain', 'plain', 'plain', 'plain'),size=12,hjust=0))+
-  theme(axis.text.x = element_text(size=12))+
-  theme(plot.title = element_text(face = "bold", hjust =0.5,size=14))+
-  theme(axis.title.y = element_text(margin = margin(t = 0, r = 5, b = 0, l = 0),size=12,face="bold")) +
-  theme(axis.title.x = element_text(margin = margin(t = 5, r = 0, b = 0, l = 0),size=12,face="bold")) +
-  theme(legend.text = element_text(size=12),legend.title = element_text(size=12,face="bold"))
+  theme(axis.text.y = element_text(face = c('bold','plain', 'plain', 'plain', 'plain', 'plain', 'plain'),size=6,hjust=0))+
+  theme(axis.text.x = element_text(size=6))+
+  theme(plot.title = element_text(face = "bold", hjust =0.5,size=8))+
+  theme(axis.title.y = element_text(margin = margin(t = 0, r = 5, b = 0, l = 0),size=6,face="bold")) +
+  theme(axis.title.x = element_text(margin = margin(t = 5, r = 0, b = 0, l = 0),size=6,face="bold")) +
+  theme(legend.text = element_text(size=6),legend.title = element_text(size=6,face="bold")) +
+  theme(strip.text = element_text(size = 6))
 
 Brazil_plot
 
@@ -62,18 +70,19 @@ Namibia$Functional.Group <- factor(Namibia$Functional.Group, levels=rev(c("Ect. 
 Namibia_plot <- ggplot(data=Namibia)+
   geom_bar(stat="identity",aes(x=Effect.Size,y=Functional.Group,fill=Climate),position="dodge")+
   geom_errorbar(stat="identity",aes(xmax=Upper.CI,xmin=Lower.CI,y=Functional.Group,group=Climate),position=position_dodge(0.9),linewidth=0.2,width=0.2)+
-  facet_wrap(vars(Scenario))+#,scales = "free_x")+
+  facet_wrap(vars(Scenario), labeller = as_labeller(labels_tot_bio))+#,scales = "free_x")+
   scale_x_continuous(breaks=seq(-25,1,5))+
   scale_fill_brewer(palette="Set2",direction = 1)+  
   labs(title="Namibia", x='Effect Size (% Change)', y = "Functional Group (FG)",col="Climate Scenario")+
   geom_vline(xintercept=0, color='black', linetype='dashed') +
   theme_classic()+
-  theme(axis.text.y = element_text(face = c('bold','plain', 'plain', 'plain', 'plain', 'plain', 'plain'),size=12,hjust=0))+
-  theme(axis.text.x = element_text(size=12))+
-  theme(plot.title = element_text(face = "bold", hjust =0.5,size=14))+
-  theme(axis.title.y = element_text(margin = margin(t = 0, r = 5, b = 0, l = 0),size=12,face="bold")) +
-  theme(axis.title.x = element_text(margin = margin(t = 5, r = 0, b = 0, l = 0),size=12,face="bold")) +
-  theme(legend.text = element_text(size=12),legend.title = element_text(size=12,face="bold"))
+  theme(axis.text.y = element_text(face = c('bold','plain', 'plain', 'plain', 'plain', 'plain', 'plain'),size=6,hjust=0))+
+  theme(axis.text.x = element_text(size=6))+
+  theme(plot.title = element_text(face = "bold", hjust =0.5,size=8))+
+  theme(axis.title.y = element_text(margin = margin(t = 0, r = 5, b = 0, l = 0),size=6,face="bold")) +
+  theme(axis.title.x = element_text(margin = margin(t = 5, r = 0, b = 0, l = 0),size=6,face="bold")) +
+  theme(legend.text = element_text(size=6),legend.title = element_text(size=6,face="bold"))+
+  theme(strip.text = element_text(size = 6))
 
 Namibia_plot
 
@@ -84,18 +93,19 @@ France$Functional.Group <- factor(France$Functional.Group, levels=rev(c("Ect. Om
 France_plot <- ggplot(data=France)+
   geom_bar(stat="identity",aes(x=Effect.Size,y=Functional.Group,fill=Climate),position="dodge")+
   geom_errorbar(stat="identity",aes(xmax=Upper.CI,xmin=Lower.CI,y=Functional.Group,group=Climate),position=position_dodge(0.9),linewidth=0.2,width=0.2)+
-  facet_wrap(vars(Scenario))+#,scales = "free_x")+
+  facet_wrap(vars(Scenario), labeller = as_labeller(labels_tot_bio))+#,scales = "free_x")+
   scale_x_continuous(breaks=seq(-20,1,5))+
   scale_fill_brewer(palette="Set2",direction = 1)+  
   labs(title="France", x='Effect Size (% Change)', y = "Functional Group (FG)",col="Climate Scenario")+
   geom_vline(xintercept=0, color='black', linetype='dashed') +
   theme_classic()+
-  theme(axis.text.y = element_text(face = c('bold','plain', 'plain', 'plain', 'plain', 'plain', 'plain'),size=12,hjust=0))+
-  theme(axis.text.x = element_text(size=12))+
-  theme(plot.title = element_text(face = "bold", hjust =0.5,size=14))+
-  theme(axis.title.y = element_text(margin = margin(t = 0, r = 5, b = 0, l = 0),size=12,face="bold")) +
-  theme(axis.title.x = element_text(margin = margin(t = 5, r = 0, b = 0, l = 0),size=12,face="bold")) +
-  theme(legend.text = element_text(size=12),legend.title = element_text(size=12,face="bold"))
+  theme(axis.text.y = element_text(face = c('bold','plain', 'plain', 'plain', 'plain', 'plain', 'plain'),size=6,hjust=0))+
+  theme(axis.text.x = element_text(size=6))+
+  theme(plot.title = element_text(face = "bold", hjust =0.5,size=8))+
+  theme(axis.title.y = element_text(margin = margin(t = 0, r = 5, b = 0, l = 0),size=6,face="bold")) +
+  theme(axis.title.x = element_text(margin = margin(t = 5, r = 0, b = 0, l = 0),size=6,face="bold")) +
+  theme(legend.text = element_text(size=6),legend.title = element_text(size=6,face="bold"))+
+  theme(strip.text = element_text(size = 6))
 
 France_plot
 
@@ -106,18 +116,19 @@ Finland$Functional.Group <- factor(Finland$Functional.Group, levels=rev(c("Ect. 
 Finland_plot <- ggplot(data=Finland)+
   geom_bar(stat="identity",aes(x=Effect.Size,y=Functional.Group,fill=Climate),position="dodge")+
   geom_errorbar(stat="identity",aes(xmax=Upper.CI,xmin=Lower.CI,y=Functional.Group,group=Climate),position=position_dodge(0.9),linewidth=0.2,width=0.2)+
-  facet_wrap(vars(Scenario))+#,scales = "free_x")+
+  facet_wrap(vars(Scenario), labeller = as_labeller(labels_tot_bio))+#,scales = "free_x")+
   scale_x_continuous(breaks=seq(-15,2,5))+
   scale_fill_brewer(palette="Set2",direction = 1)+  
   labs(title="Finland", x='Effect Size (% Change)', y = "Functional Group (FG)",col="Climate Scenario")+
   geom_vline(xintercept=0, color='black', linetype='dashed') +
   theme_classic()+
-  theme(axis.text.y = element_text(face = c('bold','plain', 'plain', 'plain', 'plain', 'plain', 'plain'),size=12,hjust=0))+
-  theme(axis.text.x = element_text(size=12))+
-  theme(plot.title = element_text(face = "bold", hjust =0.5,size=14))+
-  theme(axis.title.y = element_text(margin = margin(t = 0, r = 5, b = 0, l = 0),size=12,face="bold")) +
-  theme(axis.title.x = element_text(margin = margin(t = 5, r = 0, b = 0, l = 0),size=12,face="bold")) +
-  theme(legend.text = element_text(size=12),legend.title = element_text(size=12,face="bold"))
+  theme(axis.text.y = element_text(face = c('bold','plain', 'plain', 'plain', 'plain', 'plain', 'plain'),size=6,hjust=0))+
+  theme(axis.text.x = element_text(size=6))+
+  theme(plot.title = element_text(face = "bold", hjust =0.5,size=8))+
+  theme(axis.title.y = element_text(margin = margin(t = 0, r = 5, b = 0, l = 0),size=6,face="bold")) +
+  theme(axis.title.x = element_text(margin = margin(t = 5, r = 0, b = 0, l = 0),size=6,face="bold")) +
+  theme(legend.text = element_text(size=6),legend.title = element_text(size=6,face="bold"))+
+  theme(strip.text = element_text(size = 6))
 
 Finland_plot
 
@@ -125,20 +136,21 @@ Finland_plot
 ###         ARRANGE ALL PLOTS TO DINA4 AND SAVE AS PDF              ###
 ###-----------------------------------------------------------------###
 #Makes a big plot of all 9 ggplot objects (FG's) + delete redundant information 
-a <- ggarrange(Brazil_plot+rremove("xlab")+rremove("ylab"),Namibia_plot+rremove("ylab")+rremove("xlab"),France_plot+rremove("ylab")+rremove("xlab"),Finland_plot+rremove("ylab")+rremove("xlab"), 
+a <- ggarrange(Brazil_plot+rremove("xlab")+rremove("ylab"),Finland_plot+rremove("ylab")+rremove("xlab"),France_plot+rremove("ylab")+rremove("xlab"),Namibia_plot+rremove("ylab")+rremove("xlab"), 
                ncol = 1, nrow = 4,
                labels = c("(a)", "(b)", "(c)","(d)","(e)","(f)"),
-               legend = "top",
+               font.label = list(size=8),
+               legend = "bottom",
                common.legend = T,
                align = "h")#dev.off()
 
 #add title + x and y axis captions 
 annotate_figure(a,
-                bottom = text_grob("Effect Size (% Change)",hjust=0.2,face="bold",size=12),
-                left = text_grob("Functional Group",rot=90,hjust=0.5,face="bold",size=12))
+                bottom = text_grob("Effect Size (% Change)",hjust=0.2,face="bold",size=6),
+                left = text_grob("Functional Group",rot=90,hjust=0.5,face="bold",size=6))
 
 #save pdf file in dina4
-ggsave(paste0(figpath,sep="_","Fig3.png"),dpi=1200,width=250,height=360,units="mm")
+ggsave(paste0(figpath,sep="_","Fig3.pdf"),width=110, height=180, units="mm")
 
 ###-----------------------------------------------------------------###
 ###                         REGIONS PLOT                            ###
@@ -146,24 +158,28 @@ ggsave(paste0(figpath,sep="_","Fig3.png"),dpi=1200,width=250,height=360,units="m
 
 Regions <- subset(All,Functional.Group=="Overall Biomass")
 All$Scenario <- factor(All$Scenario,levels=c("Climate","Current Land Use","Maximum Land Use"))
+All$Region <- factor(All$Region, levels = c("Brazil", "Finland", "France", "Namibia"))
 
 All_Regions <- ggplot(data=Regions)+
   geom_bar(stat="identity",aes(x=Effect.Size,y=Region,fill=Climate),position="dodge")+
   geom_errorbar(stat="identity",aes(xmax=Upper.CI,xmin=Lower.CI,y=Region,group=Climate),position=position_dodge(0.9),linewidth=0.2,width=0.2)+
-  facet_wrap(vars(Scenario))+#,scales = "free_x")+
+  facet_wrap(vars(Scenario), ncol = 3, labeller = as_labeller(labels_tot_bio))+#,scales = "free_x")+
   scale_fill_brewer(palette="Set2",direction = 1)+  
   scale_x_continuous(limits=c(-10,1),breaks=seq(-10,1,2))+
+  scale_y_discrete(limits = rev(levels(All$Region))) +  # Reverse the y-axis order
   labs(x='Effect Size (% Change)', y = "Region",col="Climate Scenario")+
-  theme(axis.text.y = element_text(size=12,hjust=0))+
+  theme(axis.text.y = element_text(size=6,hjust=0))+
   geom_vline(xintercept=0, color='black', linetype='dashed') +
   theme_classic()+
-  theme(axis.text.y = element_text(size=12,hjust=0))+
-  theme(plot.title = element_text(face = "bold", hjust =0.5,size=14))+
-  theme(axis.title.y = element_text(margin = margin(t = 0, r = 5, b = 0, l = 0),size=12,face="bold")) +
-  theme(axis.title.x = element_text(margin = margin(t = 5, r = 0, b = 0, l = 0),size=12,face="bold")) +
-  theme(legend.position = "top",legend.text = element_text(size=12),legend.title = element_text(size=12,face="bold"))
+  theme(axis.text.y = element_text(size=6,hjust=0))+
+  theme(axis.text.x = element_text(size=6,hjust=0))+
+  theme(plot.title = element_text(face = "bold", hjust =0.5,size=8))+
+  theme(axis.title.y = element_text(margin = margin(t = 0, r = 5, b = 0, l = 0),size=6,face="bold")) +
+  theme(axis.title.x = element_text(margin = margin(t = 5, r = 0, b = 0, l = 0),size=6,face="bold")) +
+  theme(legend.position = "bottom",legend.text = element_text(size=6),legend.title = element_text(size=6,face="bold"))+
+  theme(strip.text = element_text(size = 6))
 
 All_Regions
 
 #save pdf file in dina4
-ggsave(paste0(figpath,sep="_","Fig2.png"),dpi=1200,width=250,height=120,units="mm")
+ggsave(paste0(figpath,sep="_","Fig2.pdf"),width=110, height=75, units="mm")

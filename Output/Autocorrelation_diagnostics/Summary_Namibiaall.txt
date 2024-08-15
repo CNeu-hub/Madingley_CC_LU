@@ -1,0 +1,4 @@
+[1] "Morans I Monte Carlo Simulation: 56 of 76 P-Values are significant"
+[1] "Morans I for Spatial Autocorrelation in Residuals: 60 of 76 P-Values are significant"
+[1] "Raos Score for Spatial Dependence (Spatial Error Model): 58 of 76 P-Values are significant"
+[1] "Raos Score for Spatial Dependence (Spatial Lag Model): 64 of 76 P-Values are significant"

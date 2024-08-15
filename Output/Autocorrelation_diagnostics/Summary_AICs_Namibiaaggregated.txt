@@ -1,0 +1,3 @@
+
+       lm Spa_error   Spa_lag   Spa_sac 
+        5        12         3        30 

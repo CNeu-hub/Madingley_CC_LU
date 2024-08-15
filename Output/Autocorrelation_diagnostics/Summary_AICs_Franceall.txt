@@ -1,0 +1,3 @@
+
+Spa_error   Spa_lag   Spa_sac 
+       30        34        16 

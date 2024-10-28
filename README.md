@@ -1,7 +1,8 @@
-# Model-based Impact Analysis of Climate Change and Land-use Intensification on Trophic Networks
+# Data Repository: Model-based Impact Analysis of Climate Change and Land-use Intensification on Trophic Networks
 
-#### Author: xx
-#### Date: 23.05.2024
+#### Author: Christian Neumann
+#### Date: 28.10.2024
+#### Repository for: Neumann, C., Sritongchuay, T. and Seppelt, R. 2024. Model-based impact analysis of climate change and land-use intensification on trophic networks. - Ecography 2024:e07533, doi: 10.1111/ecog.07533
 
 ## Overview
 

@@ -30,11 +30,18 @@ Max_LU$Scenario <- "Maximum Land Use"
 
 All <- rbind(Climate,Current_LU,Max_LU)
 
+#Decapitalize groups for clean plotting
+All <- All %>%
+  mutate(Functional.Group = stringr::str_replace(Functional.Group, "Omn", "omn")) %>%
+  mutate(Functional.Group = stringr::str_replace(Functional.Group, "Herb", "herb")) %>%
+  mutate(Functional.Group = stringr::str_replace(Functional.Group, "Carn", "carn")) %>%
+  mutate(Functional.Group = stringr::str_replace(Functional.Group, "Biomass", "biomass"))
+
 #create labels for facet wraps 
 labels_tot_bio <- c(
   `Climate` = "(a) Climate",
-  `Current Land Use` = "(b) Current Land Use",
-  `Maximum Land Use` = "(c) Maximum Land Use"
+  `Current Land Use` = "(b) Current land use",
+  `Maximum Land Use` = "(c) Maximum land use"
 )
 
 #check color blind palette #we use Rcolorbrewer Set2 here
@@ -42,7 +49,7 @@ display.brewer.all(colorblindFriendly = T)
 
 Brazil <- subset(All,Region=="Brazil")
 Brazil$Scenario <- factor(Brazil$Scenario,levels=c("Climate","Current Land Use","Maximum Land Use"))
-Brazil$Functional.Group <- factor(Brazil$Functional.Group, levels=rev(c("Ect. Omnivores","Ect. Carnivores","Ect. Herbivores","End. Omnivores","End. Carnivores","End. Herbivores","Overall Biomass")))
+Brazil$Functional.Group <- factor(Brazil$Functional.Group, levels=rev(c("Ect. omnivores","Ect. carnivores","Ect. herbivores","End. omnivores","End. carnivores","End. herbivores","Overall biomass")))
 
 Brazil_plot <- ggplot(data=Brazil)+
   geom_bar(stat="identity",aes(x=Effect.Size,y=Functional.Group,fill=Climate),position="dodge")+
@@ -50,7 +57,7 @@ Brazil_plot <- ggplot(data=Brazil)+
   facet_wrap(vars(Scenario), labeller = as_labeller(labels_tot_bio))+#,scales = "free_x")+
   scale_x_continuous(breaks=seq(-12,1,2))+
   scale_fill_brewer(palette="Set2",direction = 1)+  
-  labs(title="Brazil", x='Effect Size (% Change)', y = "Functional Group (FG)",col="Climate Scenario")+
+  labs(title="Brazil", x='Effect size (% change)', y = "Functional group (FG)",col="Climate scenario") +
   geom_vline(xintercept=0, color='black', linetype='dashed') +
   theme_classic()+
   theme(axis.text.y = element_text(face = c('bold','plain', 'plain', 'plain', 'plain', 'plain', 'plain'),size=6,hjust=0))+
@@ -65,7 +72,7 @@ Brazil_plot
 
 Namibia <- subset(All,Region=="Namibia")
 Namibia$Scenario <- factor(Namibia$Scenario,levels=c("Climate","Current Land Use","Maximum Land Use"))
-Namibia$Functional.Group <- factor(Namibia$Functional.Group, levels=rev(c("Ect. Omnivores","Ect. Carnivores","Ect. Herbivores","End. Omnivores","End. Carnivores","End. Herbivores","Overall Biomass")))
+Namibia$Functional.Group <- factor(Namibia$Functional.Group, levels=rev(c("Ect. omnivores","Ect. carnivores","Ect. herbivores","End. omnivores","End. carnivores","End. herbivores","Overall biomass")))
 
 Namibia_plot <- ggplot(data=Namibia)+
   geom_bar(stat="identity",aes(x=Effect.Size,y=Functional.Group,fill=Climate),position="dodge")+
@@ -73,7 +80,7 @@ Namibia_plot <- ggplot(data=Namibia)+
   facet_wrap(vars(Scenario), labeller = as_labeller(labels_tot_bio))+#,scales = "free_x")+
   scale_x_continuous(breaks=seq(-25,1,5))+
   scale_fill_brewer(palette="Set2",direction = 1)+  
-  labs(title="Namibia", x='Effect Size (% Change)', y = "Functional Group (FG)",col="Climate Scenario")+
+  labs(title="Namibia", x='Effect size (% change)', y = "Functional group (FG)",col="Climate scenario") +
   geom_vline(xintercept=0, color='black', linetype='dashed') +
   theme_classic()+
   theme(axis.text.y = element_text(face = c('bold','plain', 'plain', 'plain', 'plain', 'plain', 'plain'),size=6,hjust=0))+
@@ -88,7 +95,7 @@ Namibia_plot
 
 France <- subset(All,Region=="France")
 France$Scenario <- factor(France$Scenario,levels=c("Climate","Current Land Use","Maximum Land Use"))
-France$Functional.Group <- factor(France$Functional.Group, levels=rev(c("Ect. Omnivores","Ect. Carnivores","Ect. Herbivores","End. Omnivores","End. Carnivores","End. Herbivores","Overall Biomass")))
+France$Functional.Group <- factor(France$Functional.Group, levels=rev(c("Ect. omnivores","Ect. carnivores","Ect. herbivores","End. omnivores","End. carnivores","End. herbivores","Overall biomass")))
 
 France_plot <- ggplot(data=France)+
   geom_bar(stat="identity",aes(x=Effect.Size,y=Functional.Group,fill=Climate),position="dodge")+
@@ -96,7 +103,7 @@ France_plot <- ggplot(data=France)+
   facet_wrap(vars(Scenario), labeller = as_labeller(labels_tot_bio))+#,scales = "free_x")+
   scale_x_continuous(breaks=seq(-20,1,5))+
   scale_fill_brewer(palette="Set2",direction = 1)+  
-  labs(title="France", x='Effect Size (% Change)', y = "Functional Group (FG)",col="Climate Scenario")+
+  labs(title="France", x='Effect size (% change)', y = "Functional group (FG)",col="Climate scenario") +
   geom_vline(xintercept=0, color='black', linetype='dashed') +
   theme_classic()+
   theme(axis.text.y = element_text(face = c('bold','plain', 'plain', 'plain', 'plain', 'plain', 'plain'),size=6,hjust=0))+
@@ -111,7 +118,7 @@ France_plot
 
 Finland <- subset(All,Region=="Finland")
 Finland$Scenario <- factor(Finland$Scenario,levels=c("Climate","Current Land Use","Maximum Land Use"))
-Finland$Functional.Group <- factor(Finland$Functional.Group, levels=rev(c("Ect. Omnivores","Ect. Carnivores","Ect. Herbivores","End. Omnivores","End. Carnivores","End. Herbivores","Overall Biomass")))
+Finland$Functional.Group <- factor(Finland$Functional.Group, levels=rev(c("Ect. omnivores","Ect. carnivores","Ect. herbivores","End. omnivores","End. carnivores","End. herbivores","Overall biomass")))
 
 Finland_plot <- ggplot(data=Finland)+
   geom_bar(stat="identity",aes(x=Effect.Size,y=Functional.Group,fill=Climate),position="dodge")+
@@ -119,7 +126,7 @@ Finland_plot <- ggplot(data=Finland)+
   facet_wrap(vars(Scenario), labeller = as_labeller(labels_tot_bio))+#,scales = "free_x")+
   scale_x_continuous(breaks=seq(-15,2,5))+
   scale_fill_brewer(palette="Set2",direction = 1)+  
-  labs(title="Finland", x='Effect Size (% Change)', y = "Functional Group (FG)",col="Climate Scenario")+
+  labs(title="Finland", x='Effect size (% change)', y = "Functional group (FG)",col="Climate scenario") +
   geom_vline(xintercept=0, color='black', linetype='dashed') +
   theme_classic()+
   theme(axis.text.y = element_text(face = c('bold','plain', 'plain', 'plain', 'plain', 'plain', 'plain'),size=6,hjust=0))+
@@ -146,8 +153,8 @@ a <- ggarrange(Brazil_plot+rremove("xlab")+rremove("ylab"),Finland_plot+rremove(
 
 #add title + x and y axis captions 
 annotate_figure(a,
-                bottom = text_grob("Effect Size (% Change)",hjust=0.2,face="bold",size=6),
-                left = text_grob("Functional Group",rot=90,hjust=0.5,face="bold",size=6))
+                bottom = text_grob("Effect size (% change)",hjust=0.2,face="bold",size=6),
+                left = text_grob("Functional group",rot=90,hjust=0.5,face="bold",size=6))
 
 #save pdf file in dina4
 ggsave(paste0(figpath,sep="_","Fig3.pdf"),width=110, height=180, units="mm")
@@ -156,7 +163,7 @@ ggsave(paste0(figpath,sep="_","Fig3.pdf"),width=110, height=180, units="mm")
 ###                         REGIONS PLOT                            ###
 ###-----------------------------------------------------------------###
 
-Regions <- subset(All,Functional.Group=="Overall Biomass")
+Regions <- subset(All,Functional.Group=="Overall biomass")
 All$Scenario <- factor(All$Scenario,levels=c("Climate","Current Land Use","Maximum Land Use"))
 All$Region <- factor(All$Region, levels = c("Brazil", "Finland", "France", "Namibia"))
 
@@ -167,7 +174,7 @@ All_Regions <- ggplot(data=Regions)+
   scale_fill_brewer(palette="Set2",direction = 1)+  
   scale_x_continuous(limits=c(-10,1),breaks=seq(-10,1,2))+
   scale_y_discrete(limits = rev(levels(All$Region))) +  # Reverse the y-axis order
-  labs(x='Effect Size (% Change)', y = "Region",col="Climate Scenario")+
+  labs(x='Effect size (% change)', y = "Region",col="Climate scenario")+
   theme(axis.text.y = element_text(size=6,hjust=0))+
   geom_vline(xintercept=0, color='black', linetype='dashed') +
   theme_classic()+

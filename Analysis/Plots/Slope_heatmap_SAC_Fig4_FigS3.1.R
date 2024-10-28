@@ -1537,6 +1537,18 @@ if(FGs == "aggregated") {
 
 col <- rev(RColorBrewer::brewer.pal(9, name = "Blues"))
 
+#Decapitalize groups for clean plotting
+test3 <- test3 %>%
+  mutate(X1 = stringr::str_replace(X1, "Omn", "omn")) %>%
+  mutate(X1 = stringr::str_replace(X1, "Herb", "herb")) %>%
+  mutate(X1 = stringr::str_replace(X1, "Carn", "carn")) %>%
+  mutate(`Simulation Experiment` = stringr::str_replace(`Simulation Experiment`, "Land Use", "land use")) %>%
+  mutate(`Simulation Experiment` = stringr::str_replace(`Simulation Experiment`, "Land Use", "land use")) 
+
+row_labels <- stringr::str_replace(row_labels, "Omn", "omn")
+row_labels <- stringr::str_replace(row_labels, "Herb", "herb")
+row_labels <- stringr::str_replace(row_labels, "Carn", "carn")
+
 #ggplot heatmap with geom_tile & facet_grid
 ggplot(test3, aes(x = X2, y = X1, fill = value)) +
   geom_tile() +  
@@ -1545,7 +1557,7 @@ ggplot(test3, aes(x = X2, y = X1, fill = value)) +
   #scale_fill_viridis(option = "inferno", breaks = seq(-6, 1, 1)) +
   scale_fill_gradientn(colours = col) + 
   ggh4x::facet_grid2(rows = vars(Region),cols = vars(`Simulation Experiment`), scales = "free", space = "free", switch = "x", strip = strip_variation) +
-  labs(fill = "Slope Value", y = "Functional Group", x = "Simulation Experiment") +
+  labs(fill = "Slope value", y = "Functional group", x = "Simulation experiment") +
   scale_y_discrete(labels = rev(row_labels), limits = rev, expand = c(0,0)) +
   scale_x_discrete(labels = col_labels, expand = c(0,0)) +
   theme(axis.text.y = element_text(size=5,hjust=0))+
